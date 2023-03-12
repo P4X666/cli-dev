@@ -1,2 +1,2 @@
 #! /usr/bin/env node
-console.log('welcome cli-dev');
+console.log('welcome cli-dev test');
