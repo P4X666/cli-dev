@@ -13,6 +13,12 @@
     "lerna": "^6.5.1"
   },
   "workspaces": [
-    "packages/*"
-  ]
+    "core/*",
+    "commands/*",
+    "models/*",
+    "utils/*"
+  ],
+  "dependencies": {
+    "yargs": "^17.7.1"
+  }
 }

@@ -2,5 +2,15 @@
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "useWorkspaces": true,
   "npmClient": "npm",
-  "version": "0.0.5"
+  "version": "0.0.5",
+  "packages": [
+    // 核心代码 执行准备 -> 命令注册 -> 命令执行
+    "core/*",
+    // 命令
+    "commands/*",
+    // 模型
+    "models/*",
+    // 工具
+    "utils/*"
+  ]
 }

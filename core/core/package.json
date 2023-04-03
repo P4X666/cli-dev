@@ -1,11 +1,14 @@
 {
-  "name": "@cli-dev_p/utils",
+  "name": "@cli-dev_p/core",
   "version": "0.0.5",
-  "description": "@cli-dev_p utils",
+  "description": "@cli-dev_p core",
   "author": "pengshixing <2644378911@qq.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "lib/utils.js",
+  "main": "lib/core.js",
+  "bin": {
+    "cli-dev": "bin/index.js"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -17,7 +20,10 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "dependencies": {
+    "@cli-dev/utils": "file:../../utils/utils"
+  },
   "scripts": {
-    "test": "node ./__tests__/utils.test.js"
+    "test": "node ./__tests__/core.test.js"
   }
 }
