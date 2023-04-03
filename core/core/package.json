@@ -21,9 +21,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@cli-dev/utils": "file:../../utils/utils",
-    "import-local": "^3.1.0",
-    "npmlog": "^7.0.1"
+    "@cli-dev/log": "file:../../utils/log",
+    "import-local": "^3.1.0"
   },
   "scripts": {
     "test": "node ./__tests__/core.test.js"

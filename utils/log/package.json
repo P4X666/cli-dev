@@ -1,0 +1,29 @@
+{
+  "name": "log",
+  "version": "0.0.5",
+  "description": "美化 log 输出",
+  "author": "pengshixing <2644378911@qq.com>",
+  "homepage": "https://github.com/P4X666/cli-dev#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/P4X666/cli-dev.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/log.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/P4X666/cli-dev/issues"
+  },
+  "dependencies": {
+    "npmlog": "^7.0.1"
+  }
+}

@@ -18,3 +18,10 @@
 - 工具方法
 - api请求
 - git api
+
+
+## lerna 常用命令
+1. 创建模块  
+`lerna create <package-name>`
+2. 给指定模块添加依赖  
+`lerna add <deps> <package-name>` 

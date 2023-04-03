@@ -2,6 +2,13 @@
 
 module.exports = core;
 
-function core() {
-  console.log('exec core');
+const pkg = require("../package.json");
+const log = require("@cli-dev/log");
+
+function core(params) {
+  checkPkgVersion();
+}
+/** 检查版本号 */
+function checkPkgVersion() {
+  log().notice('cli', pkg.version);
 }
