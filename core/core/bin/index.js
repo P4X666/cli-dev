@@ -1,12 +1,9 @@
 #! /usr/bin/env node
 
-// const yargs = require("yargs/yargs");
-// const { hideBin } = require('yargs/helpers');
+const importLocal = require("import-local");
 
-// const arg = hideBin(process.argv);
-
-// yargs(arg).argv;
-
-const utils = require("@cli-dev_p/utils");
-
-console.log(utils());
+if (importLocal(__filename)) {
+  require("npmlog").info('cli', '正在使用 cli 本地版本');
+} else {
+  require('../lib')(process.argv.slice(2));
+}
