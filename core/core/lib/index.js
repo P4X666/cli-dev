@@ -14,11 +14,18 @@ function core(params) {
   try {
     checkPkgVersion();
     checkNodeVersion();
+    checkRoot();
   } catch (error) {
     log().error(error.message)
   }
-  
 }
+/** 检查用户是否具有root权限，如果是，则降权处理 */
+function checkRoot() {
+  console.log(process.geteuid);
+  const rootCheck = require('root-check');
+  rootCheck();
+}
+
 function checkNodeVersion() {
   // 获取当前Node版本号
   console.log(process.version);
