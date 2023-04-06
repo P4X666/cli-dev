@@ -4,7 +4,11 @@ module.exports = core;
 /** 比对版本号的大小 */
 const semver = require("semver");
 const colors = require("colors");
+const userHome = require("user-home"); 
+// 最新版(5^)的使用的是ESModule，索性自己写在 Utils 中替代
+// const pathExists = require('path-exists');
 const log = require("@cli-dev/log");
+const Utils = require("@cli-dev/utils");
 
 const pkg = require("../package.json");
 const constant = require('./constant');
@@ -15,8 +19,15 @@ function core(params) {
     checkPkgVersion();
     checkNodeVersion();
     checkRoot();
+    checkUserHome();
   } catch (error) {
     log().error(error.message)
+  }
+}
+/** 如果没有主目录，则没法做后续的缓存操作 */
+function checkUserHome() {
+  if (!userHome || !Utils.pathExists(userHome)) {
+    throw new Error(colors.red('当前登录用户主目录不存在'))
   }
 }
 /** 检查用户是否具有root权限，如果是，则降权处理 */
