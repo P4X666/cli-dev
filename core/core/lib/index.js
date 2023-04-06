@@ -13,6 +13,8 @@ const Utils = require("@cli-dev/utils");
 const pkg = require("../package.json");
 const constant = require('./constant');
 
+let args;
+
 function core(params) {
   // 捕获堆栈信息，只打印出message
   try {
@@ -20,9 +22,18 @@ function core(params) {
     checkNodeVersion();
     checkRoot();
     checkUserHome();
+    checkInputArgs();
+    log.verbose('debug', 'test debug log')
   } catch (error) {
-    log().error(error.message)
+    log.error(error.message)
   }
+}
+
+function checkInputArgs() {
+  const minimist = require('minimist');
+  args = minimist(process.argv.slice(2));
+  process.env.LOG_LEVEL = args.debug ? 'verbose' : 'info';
+  log.level = process.env.LOG_LEVEL; 
 }
 /** 如果没有主目录，则没法做后续的缓存操作 */
 function checkUserHome() {
@@ -48,5 +59,5 @@ function checkNodeVersion() {
 }
 /** 检查版本号 */
 function checkPkgVersion() {
-  log().notice('cli', pkg.version);
+  log.notice('cli', pkg.version);
 }
