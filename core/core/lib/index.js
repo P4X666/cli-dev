@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = core;
+
+const path = require('path');
 /** 比对版本号的大小 */
 const semver = require("semver");
 const colors = require("colors");
@@ -13,7 +15,7 @@ const Utils = require("@cli-dev/utils");
 const pkg = require("../package.json");
 const constant = require('./constant');
 
-let args;
+let args, config;
 
 function core(params) {
   // 捕获堆栈信息，只打印出message
@@ -23,12 +25,37 @@ function core(params) {
     checkRoot();
     checkUserHome();
     checkInputArgs();
+    checkEnv();
     log.verbose('debug', 'test debug log')
   } catch (error) {
     log.error(error.message)
   }
 }
+/**
+ * @description 获取环境变量
+ * 1. 通过 .env 的方式
+ * 2. 通过挂载到 process.env 上去共享（推荐）
+ */
+function checkEnv() {
+  const dotenv = require('dotenv');
+  const dotenvPath = path.resolve(userHome, '.env');
+  if (Utils.pathExistsSync(dotenvPath)) {
+    dotenv.config({path: dotenvPath});
+  }
+  createDefaultConfig();
+  log.verbose('环境变量', process.env.CLI_HOME_PATH)
+}
 
+function createDefaultConfig(params) {
+  if (process.env.CLI_HOME) {
+    cliConfig.cliHome = path.join(userHome, process.env.CLI_HOME)
+  } else {
+    cliConfig.cliHome = path.join(userHome, constant.DEFAULT_CLI_HOME);
+    process.env.CLI_HOME = cliConfig.cliHome;
+  }
+  process.env.CLI_HOME_PATH = cliConfig.cliHome;
+}
+/** 如果传入 --debug 则进入 debug 模式 */
 function checkInputArgs() {
   const minimist = require('minimist');
   args = minimist(process.argv.slice(2));
