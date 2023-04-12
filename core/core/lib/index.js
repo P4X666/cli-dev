@@ -26,10 +26,20 @@ function core(params) {
     checkUserHome();
     checkInputArgs();
     checkEnv();
+    checkGlobalUpdate();
     log.verbose('debug', 'test debug log')
   } catch (error) {
     log.error(error.message)
   }
+}
+
+function checkGlobalUpdate() {
+  // 1. 获取当前版本号
+  const currentVersion = pkg.version;
+  const npmName = pkg.name;
+  // 2. 调用npm API 获取所有版本号
+  const { getNpmInfo } = require('@cli-dev/get-npm-info');
+  getNpmInfo(npmName);
 }
 /**
  * @description 获取环境变量
@@ -47,6 +57,7 @@ function checkEnv() {
 }
 
 function createDefaultConfig(params) {
+  const cliConfig = {}
   if (process.env.CLI_HOME) {
     cliConfig.cliHome = path.join(userHome, process.env.CLI_HOME)
   } else {
