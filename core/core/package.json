@@ -1,6 +1,6 @@
 {
   "name": "@cli-dev_p/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "@cli-dev_p core",
   "author": "pengshixing <2644378911@qq.com>",
   "homepage": "",
@@ -21,9 +21,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "@cli-dev/log": "file:../../utils/log",
     "@cli-dev/utils": "file:../../utils/utils",
-    "@cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "colors": "^1.4.0",
     "dotenv": "^16.0.3",
     "import-local": "^3.1.0",
