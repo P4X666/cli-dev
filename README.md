@@ -25,3 +25,7 @@
 `lerna create <package-name> <path>`
 2. 给指定模块添加依赖  
 `lerna add <deps> <package-name>` 
+3. 版本号复位  
++ 将`package.json`中的`version`复位
++ 删除本地tag `git tag -d tag-name`
++ 删除远程tag `git push origin :refs/tags/tag-name`
