@@ -6,7 +6,7 @@ const path = require('path');
 /** 比对版本号的大小 */
 const semver = require("semver");
 const colors = require("colors");
-const userHome = require("user-home"); 
+const userHome = require("user-home");
 // 最新版(5^)的使用的是ESModule，索性自己写在 Utils 中替代
 // const pathExists = require('path-exists');
 const log = require("@cli-dev/log");
@@ -17,7 +17,7 @@ const constant = require('./constant');
 
 let args, config;
 
-function core(params) {
+async function core(params) {
   // 捕获堆栈信息，只打印出message
   try {
     checkPkgVersion();
@@ -26,20 +26,26 @@ function core(params) {
     checkUserHome();
     checkInputArgs();
     checkEnv();
-    checkGlobalUpdate();
+    await checkGlobalUpdate();
     log.verbose('debug', 'test debug log')
   } catch (error) {
     log.error(error.message)
   }
 }
 
-function checkGlobalUpdate() {
+async function checkGlobalUpdate() {
   // 1. 获取当前版本号
   const currentVersion = pkg.version;
   const npmName = pkg.name;
-  // 2. 调用npm API 获取所有版本号
-  const { getNpmInfo } = require('@cli-dev/get-npm-info');
-  getNpmInfo(npmName);
+  const { getNpmSemverVersion } = require('@cli-dev/get-npm-info');
+  const lastVersion = await getNpmSemverVersion(currentVersion, npmName);
+  if (lastVersion && semver.gt(lastVersion, currentVersion)) {
+    log.warn(
+      '更新提示',
+      colors.yellow(
+        `请手动更新${npmName}，当前版本：${currentVersion}，最新版本${lastVersion}
+        更新命令： npm install -g ${npmName}`));
+  }
 }
 /**
  * @description 获取环境变量
@@ -50,7 +56,7 @@ function checkEnv() {
   const dotenv = require('dotenv');
   const dotenvPath = path.resolve(userHome, '.env');
   if (Utils.pathExistsSync(dotenvPath)) {
-    dotenv.config({path: dotenvPath});
+    dotenv.config({ path: dotenvPath });
   }
   createDefaultConfig();
   log.verbose('环境变量', process.env.CLI_HOME_PATH)
@@ -71,7 +77,7 @@ function checkInputArgs() {
   const minimist = require('minimist');
   args = minimist(process.argv.slice(2));
   process.env.LOG_LEVEL = args.debug ? 'verbose' : 'info';
-  log.level = process.env.LOG_LEVEL; 
+  log.level = process.env.LOG_LEVEL;
 }
 /** 如果没有主目录，则没法做后续的缓存操作 */
 function checkUserHome() {
@@ -81,14 +87,12 @@ function checkUserHome() {
 }
 /** 检查用户是否具有root权限，如果是，则降权处理 */
 function checkRoot() {
-  console.log(process.geteuid);
   const rootCheck = require('root-check');
   rootCheck();
 }
 
 function checkNodeVersion() {
   // 获取当前Node版本号
-  console.log(process.version);
   const currentNodeVersion = process.version;
   // 比对最低版本号
   if (!semver.gte(currentNodeVersion, constant.LOWEST_NODE_VERSION)) {
