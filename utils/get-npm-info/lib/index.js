@@ -35,8 +35,9 @@ async function getNpmVersions(npmName, registry) {
 /** 找出所有符合的 versions */
 function getSemverVersions(baseVersion, versions) {
   return versions
+    .filter(version => semver.satisfies(version, `>${baseVersion}`))
     // 之所以进行排序，是为了防止未来 npm 返回的 versions 不是按照倒序排列的
-    .sort((a, b) => semver.gt(b, a));
+    .sort((a, b) => semver.gt(b, a) ? 1 : -1);
 }
 /** 返回最新的 version */
 async function getNpmSemverVersion(baseVersion, npmName, registry) {
